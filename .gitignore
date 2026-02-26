@@ -23,6 +23,10 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .env.production.local
 .env.local
 
+# 本地环境配置（含 API Key，勿提交）
+env/.env.dev
+env/.env.prod
+
 # caches
 .eslintcache
 .cache
