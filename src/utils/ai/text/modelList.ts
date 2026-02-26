@@ -48,6 +48,15 @@ const modelList: Owned[] = [
   // 豆包
   {
     manufacturer: "doubao",
+    model: "doubao-seed-2-0-pro",
+    responseFormat: "schema",
+    image: true,
+    think: true,
+    instance: createOpenAI,
+    tool: true,
+  },
+  {
+    manufacturer: "doubao",
     model: "doubao-seed-1-8-251228",
     responseFormat: "schema",
     image: true,

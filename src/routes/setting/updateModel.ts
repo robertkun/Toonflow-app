@@ -18,15 +18,18 @@ export default router.post(
   }),
   async (req, res) => {
     const { id, type, model, baseUrl, apiKey, manufacturer, modelType } = req.body;
-
-    await u.db("t_config").where("id", id).update({
+    const updateData: Record<string, any> = {
       type,
       model,
       baseUrl,
-      apiKey,
       manufacturer,
       modelType,
-    });
+    };
+    // 前端可能出于安全不回显 apiKey，提交为空时保留数据库原值
+    if (apiKey != null && String(apiKey).trim() !== "") {
+      updateData.apiKey = apiKey.trim();
+    }
+    await u.db("t_config").where("id", id).update(updateData);
     res.status(200).send(success("编辑成功"));
   },
 );

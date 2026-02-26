@@ -78,4 +78,14 @@ export default async (knex: Knex): Promise<void> => {
   if (needInsert.length) {
     await knex("t_aiModelMap").insert(needInsert);
   }
+
+  // 若已有配置的 apiKey 被清空，用环境变量 DOUBAO_API_KEY 回填
+  const envKey = (process.env.DOUBAO_API_KEY ?? "").trim();
+  if (envKey) {
+    const updated = await knex("t_config")
+      .where("userId", 1)
+      .where((qb) => qb.whereNull("apiKey").orWhere("apiKey", ""))
+      .update({ apiKey: envKey });
+    if (updated > 0) console.log("[fixDB] 已从 DOUBAO_API_KEY 回填", updated, "条配置的 apiKey");
+  }
 };

@@ -151,8 +151,9 @@ router.ws("/", async (ws, req) => {
           break;
       }
     } catch (e) {
-      ws.send(JSON.stringify({ type: "error", data: "数据解析/脚本生成异常" }));
-      console.error(e);
+      const msg = e instanceof Error ? e.message : String(e);
+      ws.send(JSON.stringify({ type: "error", data: `数据解析/脚本生成异常: ${msg}` }));
+      console.error("[分镜] 消息处理异常", e);
     }
   });
 

@@ -205,7 +205,49 @@ export default async (knex: Knex, forceInit: boolean = false): Promise<void> => 
         table.primary(["id"]);
         table.unique(["id"]);
       },
-      initData: async (knex) => {},
+      initData: async (knex) => {
+        const apiKey = (process.env.DOUBAO_API_KEY ?? "").trim();
+        const baseUrl = "https://ark.cn-beijing.volces.com/api/v3";
+        const now = Date.now();
+        await knex("t_config").insert([
+          {
+            id: 1,
+            type: "text",
+            model: "doubao-seed-2-0-pro",
+            modelType: "chat",
+            apiKey,
+            baseUrl,
+            manufacturer: "doubao",
+            createTime: now,
+            index: 0,
+            userId: 1,
+          },
+          {
+            id: 2,
+            type: "image",
+            model: "doubao-seedream-4-5-251128",
+            modelType: "image",
+            apiKey,
+            baseUrl: "https://ark.cn-beijing.volces.com/api/v3/images/generations",
+            manufacturer: "volcengine",
+            createTime: now,
+            index: 0,
+            userId: 1,
+          },
+          {
+            id: 3,
+            type: "video",
+            model: "doubao-seedance-1-5-pro-251215",
+            modelType: "video",
+            apiKey,
+            baseUrl: "https://ark.cn-beijing.volces.com/api/v3/contents/generations/tasks",
+            manufacturer: "volcengine",
+            createTime: now,
+            index: 0,
+            userId: 1,
+          },
+        ]);
+      },
     },
     {
       name: "t_videoConfig",
@@ -242,54 +284,14 @@ export default async (knex: Knex, forceInit: boolean = false): Promise<void> => 
       },
       initData: async (knex) => {
         await knex("t_aiModelMap").insert([
-          {
-            id: 1,
-            configId: null,
-            name: "分镜Agent",
-            key: "storyboardAgent",
-          },
-          {
-            id: 2,
-            configId: null,
-            name: "分镜Agent图片生成",
-            key: "storyboardImage",
-          },
-          {
-            id: 3,
-            configId: null,
-            name: "大纲故事线Agent",
-            key: "outlineScriptAgent",
-          },
-          {
-            id: 4,
-            configId: null,
-            name: "资产提示词润色",
-            key: "assetsPrompt",
-          },
-          {
-            id: 5,
-            configId: null,
-            name: "资产图片生成",
-            key: "assetsImage",
-          },
-          {
-            id: 6,
-            configId: null,
-            name: "剧本生成",
-            key: "generateScript",
-          },
-          {
-            id: 7,
-            configId: null,
-            name: "视频提示词生成",
-            key: "videoPrompt",
-          },
-          {
-            id: 8,
-            configId: null,
-            name: "图片编辑",
-            key: "editImage",
-          },
+          { id: 1, configId: 1, name: "分镜Agent", key: "storyboardAgent" },
+          { id: 2, configId: 2, name: "分镜Agent图片生成", key: "storyboardImage" },
+          { id: 3, configId: 1, name: "大纲故事线Agent", key: "outlineScriptAgent" },
+          { id: 4, configId: 1, name: "资产提示词润色", key: "assetsPrompt" },
+          { id: 5, configId: 2, name: "资产图片生成", key: "assetsImage" },
+          { id: 6, configId: 1, name: "剧本生成", key: "generateScript" },
+          { id: 7, configId: 1, name: "视频提示词生成", key: "videoPrompt" },
+          { id: 8, configId: 2, name: "图片编辑", key: "editImage" },
         ]);
       },
     },
